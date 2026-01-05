@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e5a47">
+    <meta name="description" content="Simple money tips for people in their 20s-30s">
+    <title>Dollars and Sense</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e5a47 0%, #2d7a5f 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+        }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .app-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #f4d06f;
+        }
+        
+        .app-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 140px;
+            z-index: 99;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab.active {
+            color: #1e5a47;
+            border-bottom-color: #f4d06f;
+            background: #f9f9f9;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        /* Tip of the Day */
+        .tip-of-day {
+            background: linear-gradient(135deg, #1e5a47 0%, #2d7a5f 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(30, 90, 71, 0.3);
+        }
+        
+        .tip-of-day-badge {
+            display: inline-block;
+            background: #f4d06f;
+            color: #1e5a47;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tip-emoji {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .tip-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .tip-message {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        
+        .tip-action {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .tip-action-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .complete-btn {
+            background: #f4d06f;
+            color: #1e5a47;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 208, 111, 0.4);
+        }
+        
+        .complete-btn.completed {
+            background: #4caf50;
+            color: white;
+        }
+        
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: white;
+            border: 2px solid #1e5a47;
+            color: #1e5a47;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: #1e5a47;
+            color: white;
+        }
+        
+        /* Tip Cards */
+        .tip-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .tip-card.completed {
+            opacity: 0.7;
+            background: #f0f8f5;
+        }
+        
+        .tip-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .tip-card-emoji {
+            font-size: 2rem;
+        }
+        
+        .tip-card-title-section {
+            flex: 1;
+        }
+        
+        .tip-card-number {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tip-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e5a47;
+        }
+        
+        .tip-card-message {
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .tip-card-action {
+            background: #f0f8f5;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #f4d06f;
+        }
+        
+        .tip-card-action-label {
+            font-size: 0.75rem;
+            color: #1e5a47;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+        
+        .tip-card-action-text {
+            color: #1e5a47;
+            font-weight: 600;
+        }
+        
+        .tip-card-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .tip-card-checkbox input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .tip-card-checkbox-label {
+            font-weight: 600;
+            color: #1e5a47;
+            cursor: pointer;
+        }
+        
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e5a47;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e5a47;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #1e5a47 0%, #2d7a5f 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .empty-state-text {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state-subtext {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        /* Coming Soon Badge */
+        .coming-soon {
+            display: inline-block;
+            background: #f4d06f;
+            color: #1e5a47;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+        
+        /* Placeholder Sections */
+        .placeholder-section {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .placeholder-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e5a47;
+            margin-bottom: 10px;
+        }
+        
+        .placeholder-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .placeholder-btn {
+            background: #f4d06f;
+            color: #1e5a47;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 500px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+            }
+            
+            .filter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <svg class="logo-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="95" fill="#1e5a47"/>
+                <!-- Dollar Sign -->
+                <text x="70" y="130" font-size="80" fill="#90cdb0" font-weight="bold">$</text>
+                <!-- Brain -->
+                <path d="M140,60 Q145,55 150,60 Q155,65 150,70 Q145,75 145,80 Q145,85 150,90 Q155,95 150,100 Q145,105 140,100 Q135,95 135,90 Q135,85 130,80 Q125,75 130,70 Q135,65 140,60" fill="#f4d06f" stroke="#1e5a47" stroke-width="2"/>
+                <!-- Text -->
+                <text x="100" y="175" font-size="20" fill="#f4d06f" text-anchor="middle" font-weight="bold">Dollars and Sense</text>
+            </svg>
+        </div>
+        <h1 class="app-title">Dollars and Sense</h1>
+        <p class="app-subtitle">Simple money tips for your 20s-30s</p>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showSection('today')">Today</button>
+        <button class="nav-tab" onclick="showSection('all')">All Tips</button>
+        <button class="nav-tab" onclick="showSection('progress')">Progress</button>
+        <button class="nav-tab" onclick="showSection('more')">More</button>
+    </div>
+    
+    <div class="container">
+        
+        <!-- Today Section -->
+        <div id="today" class="section active">
+            <div id="tipOfDay" class="tip-of-day">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: #1e5a47;">🔥 Start Here (Foundation)</h3>
+            <div id="startHereTips"></div>
+        </div>
+        
+        <!-- All Tips Section -->
+        <div id="all" class="section">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterTips('all')">All</button>
+                <button class="filter-btn" onclick="filterTips('start')">Start Here</button>
+                <button class="filter-btn" onclick="filterTips('levelup')">Level Up</button>
+                <button class="filter-btn" onclick="filterTips('advanced')">Advanced</button>
+            </div>
+            <div id="allTipsList"></div>
+        </div>
+        
+        <!-- Progress Section -->
+        <div id="progress" class="section">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="completedCount">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCount">36</div>
+                    <div class="stat-label">Total Tips</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="streakCount">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-title">Overall Progress</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
+                </div>
+            </div>
+            
+            <div id="completedTipsList"></div>
+        </div>
+        
+        <!-- More Section -->
+        <div id="more" class="section">
+            <div class="placeholder-section">
+                <div class="placeholder-icon">📅</div>
+                <div class="placeholder-title">Book Coaching Session <span class="coming-soon">Coming Soon</span></div>
+                <div class="placeholder-text">Get personalized 1-on-1 coaching and a custom money blueprint</div>
+                <button class="placeholder-btn">Coming Soon</button>
+            </div>
+            
+            <div class="placeholder-section">
+                <div class="placeholder-icon">🧮</div>
+                <div class="placeholder-title">Money Calculators <span class="coming-soon">Coming Soon</span></div>
+                <div class="placeholder-text">Budget, emergency fund, and debt payoff calculators</div>
+                <button class="placeholder-btn">Coming Soon</button>
+            </div>
+            
+            <div class="placeholder-section">
+                <div class="placeholder-icon">💬</div>
+                <div class="placeholder-title">Join WhatsApp Community <span class="coming-soon">Coming Soon</span></div>
+                <div class="placeholder-text">Connect with others on the same money journey</div>
+                <button class="placeholder-btn">Coming Soon</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // All Tips Data
+        const allTips = [
+            // START HERE (Month 1)
+            { id: 1, emoji: '💸', title: 'Save $5 Today', message: 'Put aside $5 right now. Doesn\'t matter how - cash, jar, app, savings account. It\'s not about the $5, it\'s about building the habit.', action: 'Transfer $5 to savings or put cash in a jar', category: 'start', level: 'Start Here' },
+            { id: 2, emoji: '🔍', title: 'Find Hidden Money', message: 'Check couch cushions, old wallets, apps for forgotten gift cards. Put whatever you find in savings!', action: 'Search 3 places for hidden money today', category: 'start', level: 'Start Here' },
+            { id: 3, emoji: '🚫', title: 'Cancel One Subscription', message: 'Find one subscription you don\'t use anymore. That\'s instant money back in your pocket every month.', action: 'Review subscriptions, cancel one you rarely use', category: 'start', level: 'Start Here' },
+            { id: 4, emoji: '📊', title: 'Track One Day of Spending', message: 'Write down everything you spend today. Don\'t change habits, just notice where your money goes.', action: 'Log every dollar spent today', category: 'start', level: 'Start Here' },
+            { id: 5, emoji: '⏰', title: 'The 24-Hour Rule', message: 'Wait 24 hours before any purchase over $50. You\'ll be surprised how often you change your mind.', action: 'Add items to cart but wait 24 hours before buying', category: 'start', level: 'Start Here' },
+            { id: 6, emoji: '🛟', title: 'Start Your Safety Net', message: 'Open a separate savings account just for emergencies. Can start with $0 - what matters is having the space ready.', action: 'Open an emergency-only savings account', category: 'start', level: 'Start Here' },
+            { id: 7, emoji: '⚙️', title: 'Automate $20 to Savings', message: 'Set up automatic transfer: $20 from checking → savings weekly or monthly. Automation beats willpower.', action: 'Schedule recurring transfer in your bank app', category: 'start', level: 'Start Here' },
+            { id: 8, emoji: '🍳', title: 'Cook Instead of Ordering', message: 'Choose one meal you\'d usually eat out → cook it at home. Track what you saved and put it in savings!', action: 'Cook one meal at home this week instead of ordering', category: 'start', level: 'Start Here' },
+            { id: 9, emoji: '📅', title: 'Weekly Money Check-In', message: 'Every Sunday: Review your week. What did you spend? What did you save? How did you feel?', action: 'Set 10-minute Sunday money review', category: 'start', level: 'Start Here' },
+            { id: 10, emoji: '🎯', title: 'Set One Money Goal', message: 'Write down ONE clear goal: save $500, build $1000 safety net, cook 5 meals/week. Keep it visible!', action: 'Write one specific money goal', category: 'start', level: 'Start Here' },
+            { id: 11, emoji: '💼', title: 'Split Your Paycheck', message: 'Set a rule: Every paycheck, X% goes to savings, Y% to spending. Even 5% is a start!', action: 'Decide your savings percentage', category: 'start', level: 'Start Here' },
+            { id: 12, emoji: '🎉', title: 'Share Your Win', message: 'Share one money success from this month - big or small! Let\'s celebrate each other.', action: 'Post your win in the community', category: 'start', level: 'Start Here' },
+            
+            // LEVEL UP (Month 2)
+            { id: 13, emoji: '🛡️', title: 'Build to $500 Emergency Fund', message: 'Your first milestone: $500 saved for emergencies only. This covers most common surprises.', action: 'Calculate how much per month to hit $500 in 3 months', category: 'levelup', level: 'Level Up' },
+            { id: 14, emoji: '💵', title: 'Use Cash for One Week', message: 'Withdraw weekly spending money in cash. When it\'s gone, it\'s gone. Increases spending awareness.', action: 'Pull out cash for one week\'s expenses', category: 'levelup', level: 'Level Up' },
+            { id: 15, emoji: '📮', title: 'The Envelope Method', message: 'Allocate cash to spending categories (food, entertainment, gas). Helps visualize where money goes.', action: 'Create 3 spending envelopes', category: 'levelup', level: 'Level Up' },
+            { id: 16, emoji: '🧮', title: 'Price Per Use Calculator', message: 'Before buying: divide cost by how many times you\'ll use it. $200 jacket worn 100 times = $2/use. Worth it?', action: 'Calculate price-per-use for next purchase', category: 'levelup', level: 'Level Up' },
+            { id: 17, emoji: '📏', title: 'The 50/30/20 Rule', message: 'Budget breakdown: 50% needs, 30% wants, 20% savings. Adjust percentages based on your situation.', action: 'Calculate your current percentages', category: 'levelup', level: 'Level Up' },
+            { id: 18, emoji: '🎉', title: 'Build Your Fun Fund', message: 'Saving isn\'t about suffering. Put aside money just for guilt-free fun spending.', action: 'Open a "fun money" account or jar', category: 'levelup', level: 'Level Up' },
+            { id: 19, emoji: '⚡', title: 'Automate Bill Payments', message: 'Set up autopay for fixed bills. Never miss payments, improve credit, reduce mental load.', action: 'Automate 3 recurring bills', category: 'levelup', level: 'Level Up' },
+            { id: 20, emoji: '💕', title: 'Monthly Money Date', message: 'Dedicate 1 hour monthly to review finances, celebrate wins, plan next month.', action: 'Schedule your first money date', category: 'levelup', level: 'Level Up' },
+            { id: 21, emoji: '📊', title: 'Calculate Net Worth', message: 'Assets minus debts = net worth. Track it quarterly to see progress.', action: 'Calculate your current net worth', category: 'levelup', level: 'Level Up' },
+            { id: 22, emoji: '🕳️', title: 'Find Your Money Leak', message: 'Identify your #1 unnecessary expense category. Where does money disappear without adding value?', action: 'Review last month, find biggest leak', category: 'levelup', level: 'Level Up' },
+            { id: 23, emoji: '💳', title: 'Check Your Credit Score', message: 'Know your score. Many banks show it free. Check monthly to track progress.', action: 'Check your credit score today', category: 'levelup', level: 'Level Up' },
+            { id: 24, emoji: '🤝', title: 'Share Your Challenge', message: 'What\'s your toughest money obstacle? Share in community for support and ideas.', action: 'Post one challenge you\'re facing', category: 'levelup', level: 'Level Up' },
+            
+            // ADVANCED (Month 3+)
+            { id: 25, emoji: '🏦', title: 'High-Yield Savings', message: 'Regular savings = 0.01% interest. High-yield = 4-5%. Your money should work for you.', action: 'Research high-yield savings accounts', category: 'advanced', level: 'Advanced' },
+            { id: 26, emoji: '💳', title: 'Optimize Credit Cards', message: 'Pay in full monthly. Use for budgeted expenses only. Enjoy cashback/rewards without the debt trap.', action: 'Review your credit card strategy', category: 'advanced', level: 'Advanced' },
+            { id: 27, emoji: '🔍', title: 'Credit Monitoring', message: 'Free alerts protect your identity and track your score automatically.', action: 'Enable credit monitoring', category: 'advanced', level: 'Advanced' },
+            { id: 28, emoji: '📚', title: 'Learn Investment Basics', message: 'Understand stocks, bonds, index funds, and risk tolerance. Knowledge = confidence.', action: 'Read one article about investing basics', category: 'advanced', level: 'Advanced' },
+            { id: 29, emoji: '🚀', title: 'Open Investment Account', message: 'Compare brokerages. Look for low fees and easy-to-use platforms. Start where you\'re comfortable.', action: 'Research investment platforms', category: 'advanced', level: 'Advanced' },
+            { id: 30, emoji: '💹', title: 'Your First Investment', message: 'Start small - even $10 into an index fund. The habit matters more than the amount.', action: 'Make your first investment', category: 'advanced', level: 'Advanced' },
+            { id: 31, emoji: '🎯', title: 'Zero-Based Budgeting', message: 'Every dollar has a job before the month starts. Income minus all allocations = zero.', action: 'Create zero-based budget for next month', category: 'advanced', level: 'Advanced' },
+            { id: 32, emoji: '🛥️', title: 'Sinking Fund Strategy', message: 'Save monthly for annual expenses (insurance, holidays, car registration). No more surprise bills.', action: 'List annual expenses, divide by 12', category: 'advanced', level: 'Advanced' },
+            { id: 33, emoji: '📈', title: 'Track Investment Growth', message: 'Check quarterly, not daily. Markets fluctuate - patience wins long-term.', action: 'Set quarterly investment check-in', category: 'advanced', level: 'Advanced' },
+            { id: 34, emoji: '🧠', title: 'Identify Money Triggers', message: 'What makes you spend emotionally? Stress? Boredom? Social pressure? Knowing helps you prepare.', action: 'List your top 3 spending triggers', category: 'advanced', level: 'Advanced' },
+            { id: 35, emoji: '🌟', title: 'Abundance Mindset', message: 'Shift from "I can\'t afford it" to "How can I afford it?" Opens possibilities instead of closing doors.', action: 'Reframe one money thought this week', category: 'advanced', level: 'Advanced' },
+            { id: 36, emoji: '🎊', title: 'Celebrate Your Progress', message: 'Review how far you\'ve come. Small wins compound into massive change.', action: 'List 5 money wins from past 90 days', category: 'advanced', level: 'Advanced' }
+        ];
+
+        // State Management
+        let completedTips = JSON.parse(localStorage.getItem('completedTips') || '[]');
+        let currentFilter = 'all';
+        
+        // Get tip of the day (cycles through tips based on day of year)
+        function getTipOfDay() {
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const tipIndex = (dayOfYear - 1) % 12; // Cycle through first 12 tips
+            return allTips[tipIndex];
+        }
+
+        // Display tip of the day
+        function displayTipOfDay() {
+            const tip = getTipOfDay();
+            const isCompleted = completedTips.includes(tip.id);
+            
+            document.getElementById('tipOfDay').innerHTML = `
+                <div class="tip-of-day-badge">💡 Tip of the Day</div>
+                <div class="tip-emoji">${tip.emoji}</div>
+                <div class="tip-title">${tip.title}</div>
+                <div class="tip-message">${tip.message}</div>
+                <div class="tip-action">
+                    <div class="tip-action-label">Today's Action:</div>
+                    ${tip.action}
+                </div>
+                <button class="complete-btn ${isCompleted ? 'completed' : ''}" onclick="toggleComplete(${tip.id})">
+                    ${isCompleted ? '✓ Completed!' : 'Mark Complete'}
+                </button>
+            `;
+        }
+
+        // Display start here tips
+        function displayStartHereTips() {
+            const startTips = allTips.filter(t => t.category === 'start').slice(0, 6);
+            const html = startTips.map(tip => createTipCard(tip)).join('');
+            document.getElementById('startHereTips').innerHTML = html;
+        }
+
+        // Create tip card HTML
+        function createTipCard(tip) {
+            const isCompleted = completedTips.includes(tip.id);
+            return `
+                <div class="tip-card ${isCompleted ? 'completed' : ''}">
+                    <div class="tip-card-header">
+                        <div class="tip-card-emoji">${tip.emoji}</div>
+                        <div class="tip-card-title-section">
+                            <div class="tip-card-number">Tip #${tip.id}</div>
+                            <div class="tip-card-title">${tip.title}</div>
+                        </div>
+                    </div>
+                    <div class="tip-card-message">${tip.message}</div>
+                    <div class="tip-card-action">
+                        <div class="tip-card-action-label">Action Step:</div>
+                        <div class="tip-card-action-text">${tip.action}</div>
+                    </div>
+                    <div class="tip-card-checkbox" onclick="toggleComplete(${tip.id})">
+                        <input type="checkbox" ${isCompleted ? 'checked' : ''} onclick="event.stopPropagation()">
+                        <span class="tip-card-checkbox-label">${isCompleted ? 'Completed!' : 'Mark as done'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display all tips with filter
+        function displayAllTips() {
+            let tips = allTips;
+            if (currentFilter !== 'all') {
+                tips = allTips.filter(t => t.category === currentFilter);
+            }
+            
+            if (tips.length === 0) {
+                document.getElementById('allTipsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-emoji">🔍</div>
+                        <div class="empty-state-text">No tips in this category yet</div>
+                        <div class="empty-state-subtext">Check back soon for more!</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const html = tips.map(tip => createTipCard(tip)).join('');
+            document.getElementById('allTipsList').innerHTML = html;
+        }
+
+        // Filter tips
+        function filterTips(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayAllTips();
+        }
+
+        // Toggle tip completion
+        function toggleComplete(tipId) {
+            if (completedTips.includes(tipId)) {
+                completedTips = completedTips.filter(id => id !== tipId);
+            } else {
+                completedTips.push(tipId);
+            }
+            
+            localStorage.setItem('completedTips', JSON.stringify(completedTips));
+            
+            // Refresh all displays
+            displayTipOfDay();
+            displayStartHereTips();
+            displayAllTips();
+            updateProgress();
+        }
+
+        // Update progress stats
+        function updateProgress() {
+            const completed = completedTips.length;
+            const total = allTips.length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressBar').textContent = percentage + '%';
+            
+            // Display completed tips
+            const completedTipsList = allTips.filter(t => completedTips.includes(t.id));
+            
+            if (completedTipsList.length === 0) {
+                document.getElementById('completedTipsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-emoji">🚀</div>
+                        <div class="empty-state-text">No completed tips yet</div>
+                        <div class="empty-state-subtext">Start with today's tip!</div>
+                    </div>
+                `;
+            } else {
+                const html = completedTipsList.map(tip => createTipCard(tip)).join('');
+                document.getElementById('completedTipsList').innerHTML = html;
+            }
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Initialize app
+        function init() {
+            displayTipOfDay();
+            displayStartHereTips();
+            displayAllTips();
+            updateProgress();
+        }
+
+        // Run on load
+        window.onload = init;
+    </script>
+</body>
+</html>
